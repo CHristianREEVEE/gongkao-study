@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1a1721">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="学习+复盘">
+<link rel="apple-touch-icon" href="study-apple-icon.png">
+<link rel="icon" href="study-favicon.ico" type="image/x-icon">
+<link rel="icon" href="study-icon.png" type="image/png" sizes="128x128">
+<link rel="manifest" href="study-manifest.json">
+<title>学习 + 复盘</title>
+<style>
+  :root {
+    --bg: #1a1721;
+    --bg-2: #221e2c;
+    --card: rgba(255,255,255,0.04);
+    --card-solid: #252130;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.15);
+    --text: #e8e4ec;
+    --text-mid: #a8a0b8;
+    --text-dim: #6e6878;
+    --accent: #8b7ec8;
+    --accent-light: #a894e0;
+    --accent-glow: rgba(139,126,200,0.15);
+    --green: #6cbf84;
+    --orange: #d4a574;
+    --red: #d47474;
+    --blue: #7494d4;
+    --radius: 14px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 80px 0;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* ===== Header ===== */
+  header {
+    background: linear-gradient(180deg, #2a2438 0%, #1a1721 100%);
+    padding: 40px 20px 20px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+  }
+  .main-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--accent-light), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+  }
+  .rule-bar {
+    font-size: 12px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .rule-bar .dot { width:6px; height:6px; border-radius:50%; background:var(--green); }
+  /* ===== Container ===== */
+  .container { max-width: 500px; margin: 0 auto; padding: 16px; }
+  .container > section { margin-bottom: 20px; }
+  /* ===== Card ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  /* ===== Buttons ===== */
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn:active { transform: scale(0.95); }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+  }
+  .btn-outline:active { background: var(--card); }
+  .btn-green { background: var(--green); }
+  .btn-orange { background: var(--orange); }
+  .btn-red { background: var(--red); }
+  .btn-sm { padding: 6px 14px; font-size: 13px; min-height: 36px; border-radius: 8px; }
+  /* ===== Module 1: Check-in ===== */
+  .checkin-area { text-align: center; padding: 10px 0; }
+  .checkin-btn {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    background: var(--accent-glow);
+    color: var(--accent-light);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .3s;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .checkin-btn:active { transform: scale(0.9); }
+  .checkin-btn.done {
+    border-color: var(--green);
+    background: rgba(108,191,132,0.15);
+    color: var(--green);
+  }
+  .checkin-count { font-size: 14px; color: var(--text-mid); }
+  .checkin-count b { font-size: 24px; color: var(--accent-light); }
+  /* ===== Module 2: Timer ===== */
+  .timer-display {
+    font-size: 48px;
+    font-weight: 800;
+    text-align: center;
+    color: var(--accent-light);
+    font-variant-numeric: tabular-nums;
+    margin: 10px 0;
+    letter-spacing: 3px;
+  }
+  .timer-display.running { color: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
+  .timer-btns { display: flex; gap: 10px; justify-content: center; }
+  /* ===== Module 3 & 4: Checklist ===== */
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    min-height: 44px;
+    transition: all .2s;
+  }
+  .checklist-item:active { transform: scale(0.98); }
+  .checklist-item .checkbox {
+    width: 24px; height: 24px;
+    border: 2px solid var(--border-strong);
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+    font-size: 14px;
+  }
+  .checklist-item .checkbox.checked {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .checklist-item .item-text {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .checklist-item.done .item-text {
+    text-decoration: line-through;
+    color: var(--text-dim);
+  }
+  .checklist-item .item-time {
+    font-size: 12px;
+    color: var(--accent-light);
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .sub-item { margin-left: 20px; }
+  .section-label {
+    font-size: 13px;
+    color: var(--text-mid);
+    margin: 10px 0 4px;
+    font-weight: 600;
+  }
+  /* ===== Module 5: Review ===== */
+  .review-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: var(--card-solid);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .review-textarea:focus { outline: none; border-color: var(--accent); }
+  /* ===== Module 6: Memo ===== */
+  .memo-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .memo-input-row input {
+    flex: 1;
+    background: var(--card-solid);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-size: 14px;
+    min-height: 44px;
+  }
+  .memo-input-row input:focus { outline: none; border-color: var(--accent); }
+  .memo-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .memo-item .memo-text { flex: 1; font-size: 14px; line-height: 1.5; }
+  .memo-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .memo-actions .icon-btn {
+    width: 36px; height: 36px;
+    border: none;
+    border-radius: 8px;
+    background: var(--card-solid);
+    cursor: pointer;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+  .memo-actions .icon-btn:active { transform: scale(0.9); }
+  .memo-actions .del { color: var(--red); }
+  /* ===== Module 7: Lucky Wheel ===== */
+  .wheel-container { text-align: center; }
+  .wheel-canvas-wrap {
+    position: relative;
+    width: 280px; height: 280px;
+    margin: 0 auto 16px;
+  }
+  #wheel-canvas {
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(139,126,200,0.2);
+  }
+  .wheel-pointer {
+    position: absolute;
+    top: -5px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 25px solid var(--accent-light);
+    z-index: 10;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+  .wheel-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+    z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .wheel-options-editor { margin-top: 16px; }
+  .wheel-cat-label { font-size: 13px; color: var(--text-mid); margin: 8px 0 4px; font-weight: 600; }
+  .wheel-option-row { display: flex; gap: 6px; margin-bottom: 6px; align-items: center; }
+  .wheel-option-row input {
+    flex: 1;
+    background: var(--card-solid);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    color: var(--text);
+    font-size: 13px;
+    min-height: 36px;
+  }
+  .wheel-option-row input:focus { outline: none; border-color: var(--accent); }
+  /* ===== Stats Modal ===== */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--bg-2);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+    animation: slideUp .3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .modal-close { background: none; border: none; color: var(--text-dim); font-size: 24px; cursor: pointer; min-width:44px; min-height:44px; }
+  .tab-row { display: flex; gap: 4px; margin-bottom: 16px; }
+  .tab-row .tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-dim);
+    border: 1px solid transparent;
+    min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+  .tab-row .tab.active { background: var(--accent-glow); color: var(--accent-light); border-color: var(--accent); }
+  .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+  .stat-row b { color: var(--accent-light); }
+  .stat-chart { margin: 12px 0; }
+  .stat-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; }
+  .stat-bar .bar-bg { flex:1; height: 16px; background: var(--card-solid); border-radius: 8px; overflow: hidden; }
+  .stat-bar .bar-fill { height: 100%; background: var(--accent); border-radius: 8px; transition: width .5s; }
+  .stat-bar .bar-label { width: 50px; color: var(--text-dim); }
+  .stat-bar .bar-value { width: 50px; text-align: right; color: var(--text); }
+  /* ===== Toast ===== */
+  .toast {
+    position: fixed;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-solid);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 12px 24px;
+    color: var(--text);
+    font-size: 14px;
+    z-index: 2000;
+    opacity: 0;
+    transition: all .3s;
+    pointer-events: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .toast.show { opacity: 1; bottom: 50px; }
+  .toast.success { border-color: var(--green); }
+  .toast.warn { border-color: var(--orange); }
+  /* ===== Confirm Modal ===== */
+  .confirm-modal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    background: var(--card-solid);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    padding: 24px;
+    z-index: 1500;
+    display: none;
+    text-align: center;
+    max-width: 300px;
+  }
+  .confirm-modal.show { display: block; }
+  .confirm-modal .confirm-text { margin-bottom: 20px; font-size: 15px; }
+  .confirm-modal .confirm-btns { display: flex; gap: 10px; justify-content: center; }
+  /* ===== Result Modal ===== */
+  .result-modal {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    background: var(--card-solid);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    padding: 30px;
+    z-index: 1500;
+    display: none;
+    text-align: center;
+    max-width: 280px;
+  }
+  .result-modal.show { display: block; animation: pop .3s ease; }
+  @keyframes pop { 0% { transform: translate(-50%,-50%) scale(0.5); } 100% { transform: translate(-50%,-50%) scale(1); } }
+  .result-modal .result-emoji { font-size: 48px; margin-bottom: 8px; }
+  .result-modal .result-text { font-size: 20px; font-weight: 700; color: var(--accent-light); margin-bottom: 16px; }
+  /* ===== Empty state ===== */
+  .empty { text-align: center; color: var(--text-dim); font-size: 14px; padding: 20px; }
+  /* ===== Hidden ===== */
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="main-title">学习 + 复盘</div>
+  <div class="rule-bar">
+    <span class="dot"></span>
+    <span id="rule-text">周二～周日执行学习计划 · 周一休息</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 模块1：打卡&数据总览 -->
+  <section>
+    <div class="card">
+      <div class="card-title">📋 打卡 & 数据总览</div>
+      <div class="checkin-area">
+        <button class="checkin-btn" id="checkin-btn" onclick="toggleCheckin()">今日打卡</button>
+        <div class="checkin-count">累计打卡 <b id="checkin-total">0</b> 天</div>
+        <button class="btn btn-outline btn-sm" onclick="openStats()" style="margin-top:12px">📊 数据统计</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 模块2：番茄计时器 -->
+  <section>
+    <div class="card">
+      <div class="card-title">⏱ 番茄计时器</div>
+      <div class="timer-display" id="timer-display">00:00:00</div>
+      <div class="timer-btns">
+        <button class="btn btn-green" id="timer-start" onclick="startTimer()">▶ 开始学习</button>
+        <button class="btn btn-red" id="timer-stop" onclick="stopTimer()" disabled>■ 结束计时</button>
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:13px;color:var(--text-dim)" id="timer-count">今日 0 段 · 共 0 分钟</div>
+    </div>
+  </section>
+
+  <!-- 模块3：每日作息总规划清单 -->
+  <section id="schedule-section">
+    <div class="card">
+      <div class="card-title">📅 每日作息规划 <span style="font-size:12px;color:var(--text-dim);font-weight:400">全天学习 10h</span></div>
+      <div id="schedule-list"></div>
+    </div>
+  </section>
+
+  <!-- 模块4：公考分科学习任务清单 -->
+  <section id="tasks-section">
+    <div class="card">
+      <div class="card-title">📚 公考分科学习任务</div>
+      <div id="tasks-list"></div>
+      <div class="section-label" style="margin-top:12px">配套题库</div>
+      <div style="font-size:13px;color:var(--text-mid);line-height:1.8">
+        花生十三600题 · 刘文超1000题 · 行测5000题 · 常识积累
+      </div>
+    </div>
+  </section>
+
+  <!-- 模块5：每日复盘 -->
+  <section>
+    <div class="card">
+      <div class="card-title">📝 每日复盘</div>
+      <textarea class="review-textarea" id="review-input" placeholder="记录错题、薄弱考点、当日学习总结..." onblur="saveReview()"></textarea>
+      <button class="btn" onclick="saveReview()" style="margin-top:10px;width:100%">💾 保存复盘</button>
+    </div>
+  </section>
+
+  <!-- 模块6：备忘录 -->
+  <section>
+    <div class="card">
+      <div class="card-title">📌 备忘录</div>
+      <div class="memo-input-row">
+        <input type="text" id="memo-input" placeholder="输入备忘内容..." onkeydown="if(event.key==='Enter')addMemo()">
+        <button class="btn btn-sm" onclick="addMemo()">+ 新增</button>
+      </div>
+      <div id="memo-list"></div>
+    </div>
+  </section>
+
+  <!-- 模块7：幸运转盘（周一显示） -->
+  <section id="wheel-section" class="hidden">
+    <div class="card">
+      <div class="card-title">🎰 休息日幸运转盘</div>
+      <div class="wheel-container">
+        <div class="wheel-canvas-wrap">
+          <div class="wheel-pointer"></div>
+          <canvas id="wheel-canvas" width="280" height="280"></canvas>
+          <div class="wheel-center" onclick="spinWheel()">🎯</div>
+        </div>
+        <button class="btn" onclick="spinWheel()" id="spin-btn">转动转盘</button>
+      </div>
+      <div class="wheel-options-editor">
+        <div class="wheel-cat-label">出去玩</div>
+        <div id="wheel-out-options"></div>
+        <button class="btn btn-outline btn-sm" onclick="addWheelOption('out')" style="margin-top:6px">+ 添加</button>
+        <div class="wheel-cat-label">吃美食</div>
+        <div id="wheel-food-options"></div>
+        <button class="btn btn-outline btn-sm" onclick="addWheelOption('food')" style="margin-top:6px">+ 添加</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 统计弹窗 -->
+<div class="modal-overlay" id="stats-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span style="font-size:18px;font-weight:700">📊 数据统计</span>
+      <button class="modal-close" onclick="closeStats()">×</button>
+    </div>
+    <div class="tab-row">
+      <div class="tab active" onclick="switchStatTab('day')">日统计</div>
+      <div class="tab" onclick="switchStatTab('week')">周统计</div>
+      <div class="tab" onclick="switchStatTab('month')">月统计</div>
+    </div>
+    <div id="stats-content"></div>
+  </div>
+</div>
+
+<!-- 确认弹窗 -->
+<div class="modal-overlay" id="confirm-overlay">
+  <div class="confirm-modal" id="confirm-modal">
+    <div class="confirm-text" id="confirm-text">确认删除？</div>
+    <div class="confirm-btns">
+      <button class="btn btn-outline btn-sm" onclick="closeConfirm()">取消</button>
+      <button class="btn btn-red btn-sm" id="confirm-ok-btn">删除</button>
+    </div>
+  </div>
+</div>
+
+<!-- 转盘结果弹窗 -->
+<div class="modal-overlay" id="result-overlay">
+  <div class="result-modal" id="result-modal">
+    <div class="result-emoji">🎉</div>
+    <div class="result-text" id="result-text"></div>
+    <button class="btn btn-sm" onclick="closeResult()">好的</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ====== Storage ======
+const DB = {
+  get(key, def) {
+    try { const v = localStorage.getItem('gk_' + key); return v ? JSON.parse(v) : def; }
+    catch { return def; }
+  },
+  set(key, val) { localStorage.setItem('gk_' + key, JSON.stringify(val)); }
+};
+
+// ====== Toast ======
+let toastTimer;
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ====== Confirm ======
+let confirmCallback = null;
+function showConfirm(msg, callback) {
+  document.getElementById('confirm-text').textContent = msg;
+  document.getElementById('confirm-overlay').classList.add('show');
+  confirmCallback = callback;
+}
+document.getElementById('confirm-ok-btn').onclick = () => {
+  closeConfirm();
+  if (confirmCallback) confirmCallback();
+  confirmCallback = null;
+};
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('show'); }
+
+// ====== Date helpers ======
+function today() { return new Date().toISOString().slice(0,10); }
+function getDayOfWeek() { return new Date().getDay(); } // 0=Sun, 1=Mon, ..., 6=Sat
+function isMonday() { return getDayOfWeek() === 1; }
+function fmtTime(s) {
+  const h = Math.floor(s/3600), m = Math.floor(s%3600/60), sec = s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+function fmtMin(s) { return Math.floor(s/60) + '分钟'; }
+function fmtHour(s) { return (s/3600).toFixed(1) + '小时'; }
+
+// ====== Module 1: Check-in ======
+function getCheckins() { return DB.get('checkins', []); }
+function toggleCheckin() {
+  const t = today();
+  let checkins = getCheckins();
+  if (checkins.includes(t)) {
+    checkins = checkins.filter(d => d !== t);
+    toast('已取消打卡', '');
+  } else {
+    checkins.push(t);
+    toast('打卡成功！✅', 'success');
+    document.getElementById('checkin-btn').classList.add('done');
+    document.getElementById('checkin-btn').textContent = '已打卡';
+  }
+  DB.set('checkins', checkins);
+  updateCheckinUI();
+}
+function updateCheckinUI() {
+  const checkins = getCheckins();
+  const isToday = checkins.includes(today());
+  const btn = document.getElementById('checkin-btn');
+  if (isToday) { btn.classList.add('done'); btn.textContent = '已打卡'; }
+  else { btn.classList.remove('done'); btn.textContent = '今日打卡'; }
+  document.getElementById('checkin-total').textContent = checkins.length;
+}
+
+// ====== Module 2: Timer ======
+let timerRunning = false, timerStart = 0, timerInterval = null, todaySegments = [];
+
+function getTodaySegments() {
+  const data = DB.get('timer_segments', {});
+  return data[today()] || [];
+}
+function saveTodaySegments(segs) {
+  const data = DB.get('timer_segments', {});
+  data[today()] = segs;
+  DB.set('timer_segments', data);
+}
+function startTimer() {
+  if (timerRunning) return;
+  timerRunning = true;
+  timerStart = Date.now();
+  document.getElementById('timer-start').disabled = true;
+  document.getElementById('timer-stop').disabled = false;
+  document.getElementById('timer-display').classList.add('running');
+  timerInterval = setInterval(updateTimerDisplay, 100);
+}
+function stopTimer() {
+  if (!timerRunning) return;
+  timerRunning = false;
+  clearInterval(timerInterval);
+  const elapsed = Math.floor((Date.now() - timerStart) / 1000);
+  if (elapsed >= 1) {
+    const segs = getTodaySegments();
+    segs.push({ start: timerStart, end: Date.now(), duration: elapsed });
+    saveTodaySegments(segs);
+    toast(`本次学习 ${fmtMin(elapsed)}，已保存✅`, 'success');
+  }
+  document.getElementById('timer-start').disabled = false;
+  document.getElementById('timer-stop').disabled = true;
+  document.getElementById('timer-display').classList.remove('running');
+  document.getElementById('timer-display').textContent = '00:00:00';
+  updateTimerCount();
+}
+function updateTimerDisplay() {
+  const elapsed = Math.floor((Date.now() - timerStart) / 1000);
+  document.getElementById('timer-display').textContent = fmtTime(elapsed);
+}
+function updateTimerCount() {
+  const segs = getTodaySegments();
+  const totalSec = segs.reduce((s, x) => s + x.duration, 0);
+  document.getElementById('timer-count').textContent = `今日 ${segs.length} 段 · 共 ${fmtMin(totalSec)}`;
+}
+
+// ====== Module 3: Schedule Checklist ======
+const schedule = [
+  { time: '8:00', text: '起床', checkable: true },
+  { time: '8:30-12:00', text: '学习（3.5小时）', checkable: true },
+  { time: '12:00-14:00', text: '午休', checkable: true },
+  { time: '14:00-17:30', text: '学习（3.5小时）', checkable: true },
+  { time: '17:30-19:00', text: '爬坡运动', checkable: true },
+  { time: '19:00-22:00', text: '学习（3小时）', checkable: true },
+  { time: '23:00', text: '睡觉', checkable: false },
+];
+function getScheduleDone() { return DB.get('schedule_' + today(), []); }
+function setScheduleDone(done) { DB.set('schedule_' + today(), done); }
+function renderSchedule() {
+  const done = getScheduleDone();
+  const list = document.getElementById('schedule-list');
+  list.innerHTML = schedule.map((item, i) => `
+    <div class="checklist-item ${done.includes(i) ? 'done' : ''}" onclick="${item.checkable ? `toggleSchedule(${i})` : ''}">
+      ${item.checkable ? `<div class="checkbox ${done.includes(i) ? 'checked' : ''}">${done.includes(i) ? '✓' : ''}</div>` : '<div style="width:24px"></div>'}
+      <span class="item-text">${item.text}</span>
+      <span class="item-time">${item.time}</span>
+    </div>
+  `).join('');
+}
+function toggleSchedule(i) {
+  let done = getScheduleDone();
+  if (done.includes(i)) {
+    done = done.filter(x => x !== i);
+  } else {
+    done.push(i);
+    toast('已完成 ✅', 'success');
+  }
+  setScheduleDone(done);
+  renderSchedule();
+}
+
+// ====== Module 4: Study Tasks ======
+const tasks = [
+  { cat: '言语理解', time: '2小时', desc: '优先复习行测5000题' },
+  { cat: '资料分析', time: '2小时', desc: '优先完成超大杯习题' },
+  { cat: '判断推理 - 逻辑判断', time: '40分钟', desc: '' },
+  { cat: '判断推理 - 图形推理', time: '50分钟', desc: '' },
+  { cat: '判断推理 - 定义+类比', time: '30分钟', desc: '' },
+  { cat: '数量关系', time: '1.5小时', desc: '花生十三600题' },
+  { cat: '申论', time: '2小时', desc: '练习小题+大作文，梳理改造理论' },
+];
+function getTasksDone() { return DB.get('tasks_' + today(), []); }
+function setTasksDone(done) { DB.set('tasks_' + today(), done); }
+function renderTasks() {
+  const done = getTasksDone();
+  const list = document.getElementById('tasks-list');
+  list.innerHTML = tasks.map((t, i) => `
+    <div class="checklist-item ${done.includes(i) ? 'done' : ''}" onclick="toggleTask(${i})">
+      <div class="checkbox ${done.includes(i) ? 'checked' : ''}">${done.includes(i) ? '✓' : ''}</div>
+      <span class="item-text"><b>${t.cat}</b>${t.desc ? ' — ' + t.desc : ''}</span>
+      <span class="item-time">${t.time}</span>
+    </div>
+  `).join('');
+}
+function toggleTask(i) {
+  let done = getTasksDone();
+  if (done.includes(i)) {
+    done = done.filter(x => x !== i);
+  } else {
+    done.push(i);
+    toast('已完成 ✅', 'success');
+  }
+  setTasksDone(done);
+  renderTasks();
+}
+
+// ====== Module 5: Review ======
+function loadReview() {
+  document.getElementById('review-input').value = DB.get('review_' + today(), '');
+}
+function saveReview() {
+  const text = document.getElementById('review-input').value.trim();
+  DB.set('review_' + today(), text);
+  toast('复盘已保存 ✅', 'success');
+}
+
+// ====== Module 6: Memo ======
+function getMemos() { return DB.get('memos', []); }
+function setMemos(m) { DB.set('memos', m); }
+function addMemo() {
+  const input = document.getElementById('memo-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const memos = getMemos();
+  memos.unshift({ id: Date.now(), text, created: Date.now() });
+  setMemos(memos);
+  input.value = '';
+  renderMemos();
+  toast('备忘已添加 ✅', 'success');
+}
+function editMemo(id) {
+  const memos = getMemos();
+  const m = memos.find(x => x.id === id);
+  if (!m) return;
+  const text = prompt('编辑备忘：', m.text);
+  if (text !== null && text.trim()) {
+    m.text = text.trim();
+    setMemos(memos);
+    renderMemos();
+    toast('已修改 ✅', 'success');
+  }
+}
+function delMemo(id) {
+  showConfirm('确认删除这条备忘？', () => {
+    const memos = getMemos().filter(x => x.id !== id);
+    setMemos(memos);
+    renderMemos();
+    toast('已删除', '');
+  });
+}
+function renderMemos() {
+  const memos = getMemos();
+  const list = document.getElementById('memo-list');
+  if (!memos.length) { list.innerHTML = '<div class="empty">暂无备忘</div>'; return; }
+  list.innerHTML = memos.map(m => `
+    <div class="memo-item">
+      <span class="memo-text">${esc(m.text)}</span>
+      <div class="memo-actions">
+        <button class="icon-btn" onclick="editMemo(${m.id})">✎</button>
+        <button class="icon-btn del" onclick="delMemo(${m.id})">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ====== Module 7: Lucky Wheel ======
+const defaultWheelOptions = {
+  out: ['citywalk', '骑行', '逛街', '看电影', '猫咖探店', '户外散步'],
+  food: ['火锅', '烤肉', '自助', '滨寿司', '烤鱼', '日料简餐']
+};
+function getWheelOptions() {
+  return DB.get('wheel_options', defaultWheelOptions);
+}
+function saveWheelOptions(opts) {
+  DB.set('wheel_options', opts);
+}
+function renderWheelOptions() {
+  const opts = getWheelOptions();
+  for (const cat of ['out', 'food']) {
+    const container = document.getElementById(`wheel-${cat}-options`);
+    container.innerHTML = opts[cat].map((opt, i) => `
+      <div class="wheel-option-row">
+        <input type="text" value="${esc(opt)}" onchange="updateWheelOption('${cat}', ${i}, this.value)">
+        <button class="icon-btn del" onclick="delWheelOption('${cat}', ${i})">×</button>
+      </div>
+    `).join('');
+  }
+}
+function addWheelOption(cat) {
+  const opts = getWheelOptions();
+  opts[cat].push('新选项');
+  saveWheelOptions(opts);
+  renderWheelOptions();
+  drawWheel();
+}
+function updateWheelOption(cat, i, val) {
+  const opts = getWheelOptions();
+  opts[cat][i] = val;
+  saveWheelOptions(opts);
+  drawWheel();
+}
+function delWheelOption(cat, i) {
+  showConfirm('删除这个选项？', () => {
+    const opts = getWheelOptions();
+    opts[cat].splice(i, 1);
+    saveWheelOptions(opts);
+    renderWheelOptions();
+    drawWheel();
+  });
+}
+
+// Wheel drawing & spinning
+let wheelRotation = 0, wheelSpinning = false;
+function getAllWheelItems() {
+  const opts = getWheelOptions();
+  // Randomly pick 5-10 from combined
+  const all = [...opts.out.map(x => ({ cat: '🎯', text: x })), ...opts.food.map(x => ({ cat: '🍽', text: x }))];
+  return all;
+}
+function drawWheel() {
+  const canvas = document.getElementById('wheel-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const items = getAllWheelItems();
+  const n = items.length;
+  if (n === 0) return;
+  const colors = ['#8b7ec8','#6cbf84','#d4a574','#7494d4','#d47474','#a894e0','#5fa876','#c4956c'];
+  const cx = 140, cy = 140, r = 135;
+  ctx.clearRect(0, 0, 280, 280);
+  const angle = (2 * Math.PI) / n;
+  for (let i = 0; i < n; i++) {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, wheelRotation + i * angle, wheelRotation + (i + 1) * angle);
+    ctx.closePath();
+    ctx.fillStyle = colors[i % colors.length];
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    // Text
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(wheelRotation + (i + 0.5) * angle);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 13px -apple-system, sans-serif';
+    const text = items[i].text.length > 6 ? items[i].text.slice(0,6) : items[i].text;
+    ctx.fillText(text, r - 10, 5);
+    ctx.restore();
+  }
+}
+function spinWheel() {
+  if (wheelSpinning) return;
+  wheelSpinning = true;
+  const items = getAllWheelItems();
+  const n = items.length;
+  const targetIdx = Math.floor(Math.random() * n);
+  const angle = (2 * Math.PI) / n;
+  // Pointer at top (12 o'clock = -PI/2)
+  // Target rotation so that targetIdx segment center aligns with -PI/2
+  const targetRotation = -Math.PI/2 - (targetIdx + 0.5) * angle + (Math.random() - 0.5) * angle * 0.5;
+  // Add extra spins
+  const spins = 5;
+  const finalRotation = targetRotation + spins * 2 * Math.PI;
+  const startRotation = wheelRotation;
+  const duration = 3000;
+  const startTime = Date.now();
+  function animate() {
+    const elapsed = Date.now() - startTime;
+    const t = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+    wheelRotation = startRotation + (finalRotation - startRotation) * eased;
+    drawWheel();
+    if (t < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      wheelSpinning = false;
+      const result = items[targetIdx];
+      document.getElementById('result-text').textContent = `${result.cat} ${result.text}`;
+      document.getElementById('result-overlay').classList.add('show');
+      document.getElementById('result-modal').classList.add('show');
+    }
+  }
+  animate();
+}
+function closeResult() {
+  document.getElementById('result-overlay').classList.remove('show');
+  document.getElementById('result-modal').classList.remove('show');
+}
+
+// ====== Stats ======
+let statTab = 'day';
+function openStats() { document.getElementById('stats-modal').classList.add('show'); renderStats(); }
+function closeStats() { document.getElementById('stats-modal').classList.remove('show'); }
+function switchStatTab(tab) {
+  statTab = tab;
+  document.querySelectorAll('.tab-row .tab').forEach((t, i) => {
+    t.classList.toggle('active', ['day','week','month'][i] === tab);
+  });
+  renderStats();
+}
+function getAllTimerData() {
+  return DB.get('timer_segments', {});
+}
+function getStatsData(period) {
+  const data = getAllTimerData();
+  const now = new Date();
+  let dates = [];
+  if (period === 'day') {
+    dates = [today()];
+  } else if (period === 'week') {
+    const day = now.getDay() || 7;
+    for (let i = 1; i <= 7; i++) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - day + i);
+      dates.push(d.toISOString().slice(0,10));
+    }
+  } else {
+    const y = now.getFullYear(), m = now.getMonth();
+    const days = new Date(y, m + 1, 0).getDate();
+    for (let i = 1; i <= days; i++) {
+      dates.push(`${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`);
+    }
+  }
+  let result = [];
+  for (const d of dates) {
+    const segs = data[d] || [];
+    const total = segs.reduce((s, x) => s + x.duration, 0);
+    result.push({ date: d, segments: segs, total });
+  }
+  return result;
+}
+function renderStats() {
+  const stats = getStatsData(statTab);
+  const content = document.getElementById('stats-content');
+  const totalSec = stats.reduce((s, x) => s + x.total, 0);
+  const checkins = getCheckins();
+  
+  if (statTab === 'day') {
+    const todayStats = stats[0];
+    const segs = todayStats.segments;
+    let html = `<div class="stat-row"><span>当日总时长</span><b>${fmtHour(todayStats.total)}</b></div>`;
+    html += `<div class="stat-row"><span>学习段数</span><b>${segs.length} 段</b></div>`;
+    html += `<div class="section-label" style="margin-top:12px">分段明细</div>`;
+    if (segs.length) {
+      html += segs.map(s => {
+        const st = new Date(s.start), en = new Date(s.end);
+        return `<div class="stat-row"><span>${st.toTimeString().slice(0,5)}-${en.toTimeString().slice(0,5)}</span><b>${fmtMin(s.duration)}</b></div>`;
+      }).join('');
+    } else {
+      html += '<div class="empty">今日暂无记录</div>';
+    }
+    content.innerHTML = html;
+  } else if (statTab === 'week') {
+    const activeDays = stats.filter(s => s.total > 0).length;
+    const checkinDays = stats.filter(s => checkins.includes(s.date)).length;
+    let html = `<div class="stat-row"><span>本周总时长</span><b>${fmtHour(totalSec)}</b></div>`;
+    html += `<div class="stat-row"><span>日均时长</span><b>${fmtHour(totalSec / 7)}</b></div>`;
+    html += `<div class="stat-row"><span>打卡天数</span><b>${checkinDays} / 7</b></div>`;
+    html += `<div class="stat-row"><span>学习天数</span><b>${activeDays} / 7</b></div>`;
+    html += `<div class="stat-chart"><div class="section-label">时长趋势</div>`;
+    const days = ['一','二','三','四','五','六','日'];
+    const maxVal = Math.max(...stats.map(s => s.total), 1);
+    html += stats.map((s, i) => {
+      const pct = (s.total / maxVal * 100).toFixed(0);
+      return `<div class="stat-bar"><span class="bar-label">周${days[i]}</span><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-value">${fmtMin(s.total)}</span></div>`;
+    }).join('');
+    html += '</div>';
+    content.innerHTML = html;
+  } else {
+    const activeDays = stats.filter(s => s.total > 0).length;
+    const checkinDays = stats.filter(s => checkins.includes(s.date)).length;
+    let html = `<div class="stat-row"><span>月度总时长</span><b>${fmtHour(totalSec)}</b></div>`;
+    html += `<div class="stat-row"><span>打卡天数</span><b>${checkinDays} 天</b></div>`;
+    html += `<div class="stat-row"><span>学习天数</span><b>${activeDays} 天</b></div>`;
+    const maxVal = Math.max(...stats.map(s => s.total), 1);
+    const weeks = {};
+    stats.forEach(s => {
+      const d = new Date(s.date);
+      const weekNum = Math.ceil(d.getDate() / 7);
+      const key = `第${weekNum}周`;
+      if (!weeks[key]) weeks[key] = 0;
+      weeks[key] += s.total;
+    });
+    html += `<div class="stat-chart"><div class="section-label">周度趋势</div>`;
+    for (const [label, val] of Object.entries(weeks)) {
+      const pct = (val / maxVal * 100).toFixed(0);
+      html += `<div class="stat-bar"><span class="bar-label">${label}</span><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-value">${fmtMin(val)}</span></div>`;
+    }
+    html += '</div>';
+    content.innerHTML = html;
+  }
+}
+
+// ====== Smart Time Detection ======
+function checkTimeHint() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const totalMin = h * 60 + m;
+  // 12:00-14:00 lunch break
+  if (totalMin >= 720 && totalMin < 840) {
+    setTimeout(() => toast('该休息啦，辛苦一天了 ❤️', 'warn'), 500);
+  }
+  // 22:00-8:00 night rest
+  if (totalMin >= 1320 || totalMin < 480) {
+    setTimeout(() => toast('该休息啦，辛苦一天了 ❤️', 'warn'), 500);
+  }
+}
+
+// ====== Monday Detection ======
+function applyDayMode() {
+  if (isMonday()) {
+    // Rest day: hide study sections, show wheel
+    document.getElementById('schedule-section').classList.add('hidden');
+    document.getElementById('tasks-section').classList.add('hidden');
+    document.getElementById('wheel-section').classList.remove('hidden');
+    document.getElementById('rule-text').textContent = '今日休息日 · 转盘帮你选个快乐方式';
+    drawWheel();
+  } else {
+    // Study day: show all, hide wheel
+    document.getElementById('schedule-section').classList.remove('hidden');
+    document.getElementById('tasks-section').classList.remove('hidden');
+    document.getElementById('wheel-section').classList.add('hidden');
+  }
+}
+
+// ====== Utils ======
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+// ====== Init ======
+updateCheckinUI();
+updateTimerCount();
+renderSchedule();
+renderTasks();
+loadReview();
+renderMemos();
+renderWheelOptions();
+applyDayMode();
+checkTimeHint();
+</script>
+</body>
+</html>
