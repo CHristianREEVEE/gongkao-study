@@ -151,7 +151,7 @@
     margin: 10px 0;
     letter-spacing: 3px;
   }
-  .timer-display.running { color: var(--green); animation: pulse 2s infinite; }
+  .timer-display.running { color: var(--green); }
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.7; } }
   .timer-btns { display: flex; gap: 10px; justify-content: center; }
   /* ===== Module 3 & 4: Checklist ===== */
@@ -451,6 +451,7 @@
   <div class="tab" data-tab="study" onclick="switchTab('study')">📋 学习</div>
   <div class="tab" data-tab="memo" onclick="switchTab('memo')">📝 备忘</div>
   <div class="tab" data-tab="rest" onclick="switchTab('rest')">🎰 休息</div>
+  <div class="tab" onclick="location.href='admin.html'" style="color:var(--text-dim)">⚙️ 后台</div>
 </nav>
 <div class="panel active" id="panel-home">
   <!-- 模块1：打卡&数据总览 -->
@@ -608,6 +609,7 @@ let confirmCallback = null;
 function showConfirm(msg, callback) {
   document.getElementById('confirm-text').textContent = msg;
   document.getElementById('confirm-overlay').classList.add('show');
+  document.getElementById('confirm-modal').classList.add('show');
   confirmCallback = callback;
 }
 document.getElementById('confirm-ok-btn').onclick = () => {
@@ -615,7 +617,10 @@ document.getElementById('confirm-ok-btn').onclick = () => {
   if (confirmCallback) confirmCallback();
   confirmCallback = null;
 };
-function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('show'); }
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('show');
+  document.getElementById('confirm-modal').classList.remove('show');
+}
 
 // ====== Date helpers ======
 function today() { return new Date().toISOString().slice(0,10); }
