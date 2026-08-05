@@ -461,7 +461,6 @@
       <div class="checkin-area">
         <button class="checkin-btn" id="checkin-btn" onclick="toggleCheckin()">今日打卡</button>
         <div class="checkin-count">累计打卡 <b id="checkin-total">0</b> 天</div>
-        <button class="btn btn-outline btn-sm" onclick="openStats()" style="margin-top:12px">📊 数据统计</button>
       </div>
     </div>
   </section>
@@ -475,6 +474,18 @@
         <button class="btn btn-red" id="timer-stop" onclick="stopTimer()" disabled>■ 结束计时</button>
       </div>
       <div style="text-align:center;margin-top:8px;font-size:13px;color:var(--text-dim)" id="timer-count">今日 0 段 · 共 0 分钟</div>
+    </div>
+  </section>
+  <!-- 模块3：学习数据统计（直接展示） -->
+  <section>
+    <div class="card">
+      <div class="card-title">📊 学习数据统计</div>
+      <div class="tab-row" id="stats-tab-row">
+        <div class="tab active" onclick="switchStatTab('day')">日统计</div>
+        <div class="tab" onclick="switchStatTab('week')">周统计</div>
+        <div class="tab" onclick="switchStatTab('month')">月统计</div>
+      </div>
+      <div id="stats-content"></div>
     </div>
   </section>
   </div>
@@ -545,21 +556,7 @@
   </div>
 </div>
 
-<!-- 统计弹窗 -->
-<div class="modal-overlay" id="stats-modal">
-  <div class="modal">
-    <div class="modal-header">
-      <span style="font-size:18px;font-weight:700">📊 数据统计</span>
-      <button class="modal-close" onclick="closeStats()">×</button>
-    </div>
-    <div class="tab-row">
-      <div class="tab active" onclick="switchStatTab('day')">日统计</div>
-      <div class="tab" onclick="switchStatTab('week')">周统计</div>
-      <div class="tab" onclick="switchStatTab('month')">月统计</div>
-    </div>
-    <div id="stats-content"></div>
-  </div>
-</div>
+<!-- 统计已移至首页直接展示 -->
 
 <!-- 确认弹窗 -->
 <div class="modal-overlay" id="confirm-overlay">
@@ -966,11 +963,9 @@ function closeResult() {
 
 // ====== Stats ======
 let statTab = 'day';
-function openStats() { document.getElementById('stats-modal').classList.add('show'); renderStats(); }
-function closeStats() { document.getElementById('stats-modal').classList.remove('show'); }
 function switchStatTab(tab) {
   statTab = tab;
-  document.querySelectorAll('.tab-row .tab').forEach((t, i) => {
+  document.querySelectorAll('#stats-tab-row .tab').forEach((t, i) => {
     t.classList.toggle('active', ['day','week','month'][i] === tab);
   });
   renderStats();
@@ -1118,6 +1113,7 @@ updateCheckinUI();
 updateTimerCount();
 renderSchedule();
 renderTasks();
+renderStats();
 loadReview();
 renderMemos();
 renderWheelOptions();
